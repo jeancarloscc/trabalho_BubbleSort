@@ -1,51 +1,80 @@
-# trabalho_BubbleSort
+# Bubble Sort em Java — Clean Code
 
 ## Descrição
 
-Este projeto apresenta uma versão com princípios de *clean code* do algoritmo Bubble Sort, conforme solicitado no trabalho da disciplina. O objetivo é demonstrar como tornar o código mais legível, organizado e de fácil manutenção.
+Este projeto apresenta uma versão refatorada do algoritmo Bubble Sort em Java, seguindo princípios de _clean code_ conforme solicitado no trabalho da disciplina. O objetivo é demonstrar como tornar o código mais legível, organizado e de fácil manutenção.
 
 ## O que é Bubble Sort?
 
-Bubble Sort é um algoritmo de ordenação simples que percorre repetidamente a lista, compara elementos adjacentes e os troca de posição se estiverem na ordem errada. O processo é repetido até que a lista esteja ordenada.
+Bubble Sort é um algoritmo de ordenação simples que percorre repetidamente o array, compara elementos adjacentes e os troca de posição se estiverem na ordem errada. O processo é repetido até que o array esteja ordenado.
 
 ## Alterações de Clean Code Realizadas
 
-A partir do código original de Bubble Sort, foram realizadas ao menos três alterações para torná-lo mais aderente aos princípios de *clean code*:
+Foram realizadas ao menos três alterações principais para tornar o código mais aderente aos princípios de _clean code_:
 
-1. **Renomeação de variáveis e funções para nomes descritivos**  
-   Variáveis como `i`, `j` e funções genéricas foram renomeadas para nomes que indicam claramente seu propósito, como `currentIndex`, `nextIndex`, `bubbleSort`, etc.
+1. **Nomenclatura clara e padronizada**  
+   Variáveis e métodos foram renomeados para nomes descritivos e em português, como `valores`, `houveTroca`, `realizarPassada`, `trocarAdjacentes` e `imprimirArray`, facilitando o entendimento do código.
 
-2. **Extração de funções**  
-   Trechos de código responsáveis por tarefas específicas, como a troca de elementos, foram extraídos para funções separadas (`swap`), melhorando a legibilidade e a reutilização.
+2. **Remoção de parâmetros e métodos redundantes**  
+   O método de ordenação agora recebe apenas o array, calculando o tamanho internamente. Métodos intermediários e verificações desnecessárias foram eliminados, deixando o fluxo mais direto.
 
-3. **Remoção de comentários desnecessários e código morto**  
-   Comentários redundantes e trechos de código não utilizados foram removidos, deixando o código mais limpo e fácil de entender.
+3. **Early exit otimizado**  
+   O laço externo é interrompido imediatamente quando não há mais trocas, evitando iterações desnecessárias e melhorando a eficiência.
 
-## Exemplo de Código Clean Code
+## Exemplo de Código Java Refatorado
 
-```python
-def bubble_sort(array):
-    n = len(array)
-    for current_index in range(n):
-        for next_index in range(0, n - current_index - 1):
-            if array[next_index] > array[next_index + 1]:
-                swap(array, next_index, next_index + 1)
+```java
+class BubbleSort {
+   static void bubbleSort(int[] valores) {
+      int ultimoIndice = valores.length - 1;
+      for (int passada = 0; passada < ultimoIndice; passada++) {
+         boolean houveTroca = realizarPassada(valores, passada, ultimoIndice);
+         if (!houveTroca) break;
+      }
+   }
 
-def swap(array, index1, index2):
-    array[index1], array[index2] = array[index2], array[index1]
+   private static boolean realizarPassada(int[] valores, int passada, int ultimoIndice) {
+      boolean houveTroca = false;
+      for (int i = 0; i < ultimoIndice - passada; i++) {
+         if (valores[i] > valores[i + 1]) {
+            trocarAdjacentes(valores, i);
+            houveTroca = true;
+         }
+      }
+      return houveTroca;
+   }
 
-# Exemplo de uso
-numbers = [64, 34, 25, 12, 22, 11, 90]
-bubble_sort(numbers)
-print("Array ordenado:", numbers)
+   private static void trocarAdjacentes(int[] valores, int indice) {
+      int temporario = valores[indice];
+      valores[indice] = valores[indice + 1];
+      valores[indice + 1] = temporario;
+   }
+
+   static void imprimirArray(int[] valores) {
+      for (int valor : valores) {
+         System.out.print(valor + " ");
+      }
+      System.out.println();
+   }
+
+   public static void main(String[] args) {
+      int[] valores = {64, 34, 25, 12, 22, 11, 90};
+      bubbleSort(valores);
+      System.out.println("Array ordenado:");
+      imprimirArray(valores);
+   }
+}
 ```
 
 ## Como executar
 
-1. Copie o código acima para um arquivo `.py`.
-2. Execute com Python 3:  
+1. Compile o arquivo Java:
    ```
-   python nome_do_arquivo.py
+   javac trabalho_jean.java
+   ```
+2. Execute o programa:
+   ```
+   java BubbleSort
    ```
 
 ## Referências
